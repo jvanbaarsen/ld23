@@ -13,7 +13,7 @@ package {
 	public class ld23 extends Sprite {
 		public function ld23()
 		{
-			
+			//test
 		}
 	}
 }
