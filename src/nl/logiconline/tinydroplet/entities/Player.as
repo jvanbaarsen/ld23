@@ -9,6 +9,10 @@
 
 package nl.logiconline.tinydroplet.entities {	
 	
+	import com.matttuttle.PhysicsEntity;
+	
+	import flash.geom.Point;
+	
 	import net.flashpunk.Entity;
 	import net.flashpunk.FP;
 	import net.flashpunk.Graphic;
@@ -20,20 +24,28 @@ package nl.logiconline.tinydroplet.entities {
 	import nl.logiconline.tinydroplet.levels.Level;
 	import nl.logiconline.tinydroplet.states.GameState;
 	
-	public class Player extends Entity {
+	public class Player extends PhysicsEntity {
 		
 		//color: 0x34aaf5
-		private var speed:int = 120;
-		private var dropSpeed:int = 20;
-		private var jumpSpeed:int = 40;
-		public function Player(x:Number=0, y:Number=0, graphic:Graphic=null, mask:Mask=null) {	
-			super(x, y, graphic, mask);
+		private static const kMoveSpeed:uint = 2;
+		private static const kJumpForce:uint = 19;		
+		
+		public function Player(x:Number=0, y:Number=0, graphic:Graphic=null, mask:Mask=null) {
+			super(x, y);
 			this.width = 26;
 			this.height = 26;	
-			this.setupKeys();
+			this.setup();			
 		}
 		
-		private function setupKeys():void {
+		private function setup():void {
+			
+			// Set physics properties
+			gravity.y = 2.4;
+			maxVelocity.y = kJumpForce;
+			maxVelocity.x = kMoveSpeed * 2;
+			friction.x = friction.y = 1.6;
+			
+			//Set keys
 			Input.define("left", Key.A, Key.LEFT);
 			Input.define("right", Key.D, Key.RIGHT);
 			Input.define("jump", Key.W, Key.UP, Key.SPACE);
@@ -47,30 +59,20 @@ package nl.logiconline.tinydroplet.entities {
 		}
 		
 		override public function update():void {
+			acceleration.x = acceleration.y = 0;
+			
+			if (Input.check("left"))
+				acceleration.x = -kMoveSpeed;
+			
+			if (Input.check("right"))
+				acceleration.x = kMoveSpeed;
+			
+			if (Input.pressed("jump") && onGround)
+				acceleration.y = -kJumpForce;
+			
 			super.update();		
 			
-			
-			if(this.collide("solid", this.x, this.y) == null) {				
-				this.y += dropSpeed * FP.elapsed;
-			}			
-			
-			this.speed = 120;
-			if(Input.check("run")) this.speed = 180;			
-			var newX:int;
-			
-			if(Input.check("left")) {	
-				newX = x - (speed * FP.elapsed);
-				if(newX > 0 && this.collide("solid", this.x, this.y - 1) == null) x = newX;
-			} else if(Input.check("right")) {
-				newX = x + (speed * FP.elapsed);				
-				if(newX < (GameState(this.world).getLevel().getWidth() * Level.tileWidth) -  this.width && this.collide("solid", this.x, this.y - 1) == null) x = newX;
-			}
-			
-			if(Input.check("jump")) {
-				y -= this.jumpSpeed * FP.elapsed;
-			}
 		}
-		
 		
 	}
 }

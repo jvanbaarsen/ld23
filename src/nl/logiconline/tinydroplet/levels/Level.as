@@ -8,6 +8,8 @@
  */
 
 package nl.logiconline.tinydroplet.levels {
+	import flash.geom.Point;
+	
 	import net.flashpunk.Entity;
 	import net.flashpunk.Graphic;
 	import net.flashpunk.Mask;
@@ -27,11 +29,15 @@ package nl.logiconline.tinydroplet.levels {
 		
 		public static var tileWidth:int = 32;
 		public static var tileHeight:int = 32;
+		public static var startPoint:Point;
+		public static var endPoint:Point;
 		
 		[Embed(source="/../assets/levels/level1.png")] private const LEVEL:Class;
 		public function Level(game:GameState, x:Number=0, y:Number=0, graphic:Graphic=null, mask:Mask=null)	{
 			super(x, y, graphic, mask);
 			this.game = game;
+			Level.startPoint = new Point();
+			Level.endPoint = new Point();
 		}		
 		
 		public function createMap():void {			
@@ -50,6 +56,15 @@ package nl.logiconline.tinydroplet.levels {
 						tile = new RedTile(x * 32, y * 32);
 					} else if(canvas.getPixel(x, y) == 0xff00ff00) { //Green tile						
 						tile = new GreenTile(x * 32, y * 32);
+					} else if(canvas.getPixel(x, y) == 0xffff00ff) { // start point
+						// I hate those pixels....
+						trace("Found start point!");
+						Level.startPoint.x = x;						
+						Level.startPoint.y = y;
+						
+					} else if(canvas.getPixel(x, y) == 0xff0000ff) { // End point						
+						Level.endPoint.x = x;
+						Level.endPoint.y = y;
 					}
 					
 					if(tile != null) {
