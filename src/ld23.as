@@ -12,13 +12,16 @@ package {
 	
 	import net.flashpunk.Engine;
 	import net.flashpunk.FP;
+	
 	import nl.logiconline.tinydroplet.states.GameState;
+	import nl.logiconline.tinydroplet.states.MenuState;
 	
 	[SWF(frameRate="60",width="640", height="480")]
 	public class ld23 extends Engine {
 		public function ld23()	{
 			super(640, 480);
-			FP.world = new GameState();
+			FP.world = new MenuState();
+			FP.screen.color = 0x474747;
 			//FP.console.enable();
 		}
 	}

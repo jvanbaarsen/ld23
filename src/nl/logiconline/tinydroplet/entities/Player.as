@@ -31,10 +31,12 @@ package nl.logiconline.tinydroplet.entities {
 		private static const kMoveSpeed:uint = 2;
 		private static const kJumpForce:uint = 19;		
 		private var spritesheet:Spritemap;
+		private var health:int;
 		
 		[Embed(source="/../assets/player.png")] private const PLAYER:Class;
 		public function Player(x:Number=0, y:Number=0, graphic:Graphic=null, mask:Mask=null) {
 			super(x, y);
+			this.type = "player";
 			this.width = 26;
 			this.height = 26;
 			this.spritesheet = new Spritemap(PLAYER, 26, 26);
@@ -43,8 +45,10 @@ package nl.logiconline.tinydroplet.entities {
 			this.spritesheet.add("left", [2], 10, true);
 			this.spritesheet.add("jump", [3], 10, true);
 						
+			this.setHitbox(24, 20, -1, -6);
 			this.graphic = this.spritesheet;
-			this.setup();			
+			this.setup();	
+			this.health = 150; //The lazy way :)
 		}
 		
 		private function setup():void {
@@ -70,32 +74,43 @@ package nl.logiconline.tinydroplet.entities {
 		
 		override public function update():void {
 			acceleration.x = acceleration.y = 0;		
-			
-			if (Input.check("left")) {
-				this.spritesheet.play("left");
-				acceleration.x = -kMoveSpeed;				
-			}				
-			
-			if (Input.check("right")) {
-				this.spritesheet.play("right");
-				acceleration.x = kMoveSpeed;
-			}			
-			
-			if (Input.pressed("jump") && onGround) {				
-				acceleration.y = -kJumpForce;
-			}
-			
-			if(!onGround) {				
-				this.spritesheet.play("jump");
+			if(GameState(this.world).win) {
+				this.spritesheet.play("idle");
 			} else {
-				if(!Input.check("left") && !Input.check("right")) {
-					this.spritesheet.play("idle");	
+				if (Input.check("left")) {
+					this.spritesheet.play("left");
+					acceleration.x = -kMoveSpeed;				
 				}				
-			}
 				
+				if (Input.check("right")) {
+					this.spritesheet.play("right");
+					acceleration.x = kMoveSpeed;
+				}			
+				
+				if (Input.pressed("jump") && onGround) {				
+					acceleration.y = -kJumpForce;
+				}
+				
+				if(!onGround) {				
+					this.spritesheet.play("jump");
+				} else {
+					if(!Input.check("left") && !Input.check("right")) {
+						this.spritesheet.play("idle");	
+					}				
+				}					
+			}
+		
 			
 			super.update();		
 			
+		}
+		
+		public function getHealth():int {
+			return this.health;
+		}
+		
+		public function setHealth(health:int):void {
+			this.health = health;
 		}
 		
 	}
