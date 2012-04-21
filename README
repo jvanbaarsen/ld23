@@ -1,0 +1,25 @@
+
+
+
+
+
+	THEME: Tiny World
+
+
+	The game idea.......... Platformer
+	You play a drop of water that fell out of a bucket.. You're trying to reach the open water (sea or whatever) before you dry!
+	
+	You abilities are move left/right and jump...
+	
+	- Levels are horizontal
+	- Levels have a timer (the dry time)
+	- You die, you start at the beginning of the level
+	
+	
+	
+	---When time left---
+	Create some sort of build mechanism so the levels can be a little harder...
+	
+	
+	
+	

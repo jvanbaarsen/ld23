@@ -10,10 +10,16 @@
 package {
 	import flash.display.Sprite;
 	
-	public class ld23 extends Sprite {
-		public function ld23()
-		{
-			//test
+	import net.flashpunk.Engine;
+	import net.flashpunk.FP;
+	import nl.logiconline.tinydroplet.states.GameState;
+	
+	[SWF(frameRate="60",width="640", height="480")]
+	public class ld23 extends Engine {
+		public function ld23()	{
+			super(640, 480);
+			FP.world = new GameState();
+			FP.console.enable();
 		}
 	}
 }
