@@ -4,26 +4,29 @@
 
 
 
-	TODO list:
-	- Score system	
-	- Design tiles
-	- add pickups
+	TODO list:		
+	- Create at least 1 more levels
+	- Lava tiles
+	- Water tile (finish)
 	- add mobs
+	- death
+	- Create nice borders for the tiles (more intelligent tiles)
 	- A lot more..........
 	
 	NEXT UP:	
-	- FOOOOOODD
+	- Design tiles
 	
 	DONE:
+	- 3 Levels
 	- Level selecting
 	- Player movement
 	- Player health
 	- Basic map renderer
 	- Finish level
-	
+	- Pickups (coins)
+	- Score
 	
 
-	Time for some food :)....
 
 
 	THEME: Tiny World

@@ -30,6 +30,7 @@ package nl.logiconline.tinydroplet.states {
 		private var hud:Hud;
 		private var winText:FlashingText;
 		public  var win:Boolean = false;
+		private var score:int = 0;
 		
 		public function GameState(level:int)	{
 			super();			
@@ -84,6 +85,14 @@ package nl.logiconline.tinydroplet.states {
 			var subWinText:Text = new Text("Press SPACE to continue", 220, 246);
 			this.add(subWinText);
 			this.win = true;
+		}
+		
+		public function getScore():int {
+			return this.score;
+		}
+		
+		public function addScore(score:int):void {
+			this.score += score;
 		}
 	}
 }

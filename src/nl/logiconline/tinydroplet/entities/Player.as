@@ -22,6 +22,8 @@ package nl.logiconline.tinydroplet.entities {
 	import net.flashpunk.utils.Input;
 	import net.flashpunk.utils.Key;
 	
+	import nl.logiconline.tinydroplet.entities.pickups.Pickup;
+	import nl.logiconline.tinydroplet.gui.FloatingText;
 	import nl.logiconline.tinydroplet.levels.Level;
 	import nl.logiconline.tinydroplet.states.GameState;
 	
@@ -98,6 +100,17 @@ package nl.logiconline.tinydroplet.entities {
 						this.spritesheet.play("idle");	
 					}				
 				}					
+			}
+					
+			if(this.collide("pickup", x, y) != null) {
+				var pickup:Pickup  = Pickup(this.collide("pickup", x, y));
+				if(pickup != null) {
+					var score:FloatingText = new FloatingText(pickup.x, pickup.y, "+ "+ pickup.getValue());
+					this.world.add(score);
+					GameState(this.world).addScore(pickup.getValue());
+					this.world.remove(pickup);
+				}
+				//GameState(this.world).getLevel().getPickup(x, y);
 			}
 		
 			

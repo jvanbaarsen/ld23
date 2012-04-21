@@ -16,7 +16,7 @@ package nl.logiconline.tinydroplet.gui {
 	
 	public class Text extends Entity {
 		private var text:net.flashpunk.graphics.Text;
-		private var moveWithCamera:Boolean = true;
+		protected var moveWithCamera:Boolean = true;
 		private var relativeX:int;
 		private var relativeY:int;
 		public function Text(text:String, x:Number=0, y:Number=0)	{			

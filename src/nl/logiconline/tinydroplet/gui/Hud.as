@@ -48,7 +48,7 @@ package nl.logiconline.tinydroplet.gui {
 			timer.addEventListener(TimerEvent.TIMER, timerHandler);
 			
 			//Score
-			this.txtScore = new Text("Score: " + this.score, FP.width / 2 + 100, 10);
+			this.txtScore = new Text("Score: " + game.getScore(), FP.width / 2 + 100, 10);
 			this.txtScore.getText().size = 24;
 			
 			//Health
@@ -71,6 +71,7 @@ package nl.logiconline.tinydroplet.gui {
 		
 		override public function update():void {
 			super.update();
+			this.txtScore.getText().text = "Score: "+ game.getScore();
 		}
 		
 		override public function render():void {
@@ -86,10 +87,6 @@ package nl.logiconline.tinydroplet.gui {
 			this.actualTime += 1;		
 			this.time.setRelativeX(FP.width / 2 - 10);
 			this.time.getText().text = this.actualTime.toString();
-		}
-		
-		public function setScore(score:int):void {
-			this.score = score;
 		}
 	}
 }
