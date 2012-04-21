@@ -32,7 +32,7 @@ package nl.logiconline.tinydroplet.levels {
 		public static var startPoint:Point;
 		public static var endPoint:Point;
 		
-		[Embed(source="/../assets/levels/level1.png")] private const LEVEL:Class;
+		[Embed(source="/../assets/levels/level2.png")] private const LEVEL:Class;
 		public function Level(game:GameState, x:Number=0, y:Number=0, graphic:Graphic=null, mask:Mask=null)	{
 			super(x, y, graphic, mask);
 			this.game = game;
@@ -60,8 +60,7 @@ package nl.logiconline.tinydroplet.levels {
 						// I hate those pixels....
 						trace("Found start point!");
 						Level.startPoint.x = x;						
-						Level.startPoint.y = y;
-						
+						Level.startPoint.y = y;						
 					} else if(canvas.getPixel(x, y) == 0xff0000ff) { // End point						
 						Level.endPoint.x = x;
 						Level.endPoint.y = y;
