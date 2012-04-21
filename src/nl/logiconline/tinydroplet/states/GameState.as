@@ -13,6 +13,7 @@ package nl.logiconline.tinydroplet.states {
 	
 	import nl.logiconline.tinydroplet.Camera;
 	import nl.logiconline.tinydroplet.entities.Player;
+	import nl.logiconline.tinydroplet.gui.Hud;
 	import nl.logiconline.tinydroplet.levels.Level;
 	
 	
@@ -22,6 +23,7 @@ package nl.logiconline.tinydroplet.states {
 		private var cameraOffset:int;
 		private var cameraSpeed:int;
 		private var gameCam:Camera;
+		private var hud:Hud;
 		public function GameState()	{
 			super();
 			this.level = new Level(this);
@@ -35,9 +37,9 @@ package nl.logiconline.tinydroplet.states {
 			this.player = new Player(Level.startPoint.x * Level.tileWidth, Level.startPoint.y * Level.tileHeight);
 			this.add(this.player);
 			gameCam = new Camera(this.cameraOffset, this.cameraSpeed);
-			gameCam.adjustToPlayer(this.level.getWidth() * Level.tileWidth, this.level.getHeight() * Level.tileHeight, this.player);
-			
-			trace("Start point at: X"+ Level.startPoint.x + " Y:"+ Level.startPoint.y);
+			gameCam.adjustToPlayer(this.level.getWidth() * Level.tileWidth, this.level.getHeight() * Level.tileHeight, this.player);			
+			hud = new Hud();
+			this.add(hud);
 			
 		}
 		
@@ -45,9 +47,11 @@ package nl.logiconline.tinydroplet.states {
 			super.render();
 		}
 		
-		override public function update():void {
-			super.update();
+		override public function update():void {			
 			gameCam.moveCamera(this.level.getWidth() * Level.tileWidth, this.level.getHeight() * Level.tileHeight, this.player);
+			super.update();
+			this.hud.x = FP.camera.x;
+			this.hud.y = FP.camera.y;
 		}
 		
 		public function getLevel():Level {

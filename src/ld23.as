@@ -19,7 +19,7 @@ package {
 		public function ld23()	{
 			super(640, 480);
 			FP.world = new GameState();
-			FP.console.enable();
+			//FP.console.enable();
 		}
 	}
 }
