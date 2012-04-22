@@ -19,9 +19,8 @@ package nl.logiconline.tinydroplet.tiles {
 		[Embed(source="/../assets/tiles.png")] private const TILES:Class;		
 		public function SandTile(x:Number=0, y:Number=0, graphic:Graphic=null, mask:Mask=null) {		
 			super(x, y, graphic, mask);
-			this.tilemap = new Spritemap(TILES, 32, 32);
-			var rand:Number = Math.floor(Math.random()*2);			
-			this.tilemap.setFrame(rand, 0);
+			this.tilemap = new Spritemap(TILES, 32, 32);					
+			this.tilemap.setFrame(Math.floor(Math.random()*4), Math.floor(Math.random()*2));
 			this.graphic = this.tilemap;
 		}
 		

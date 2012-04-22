@@ -24,7 +24,7 @@ package com.matttuttle
 		public var gravity:Point       = new Point(0, 0);
 		
 		public var facing:uint;
-		public var solid:String = "solid";
+		public var solid:String = "solid";		
 				
 		public function PhysicsEntity(x:int = 0, y:int = 0)
 		{
@@ -145,9 +145,13 @@ package com.matttuttle
 					velocity.y = 0;
 					break;
 				}
-				else
-				{
-					y += FP.sign(velocity.y);
+				else {
+					var newY:int = y + FP.sign(velocity.y);					
+					if(newY < GameState(this.world).getLevel().getHeight() * Level.tileHeight - this.height) {
+						y += FP.sign(velocity.y);
+					} else {
+						this._onGround = true;
+					}
 				}
 			}
 		}

@@ -6,17 +6,19 @@
 
 	TODO list:		
 	- Create at least 1 more levels
-	- Lava tiles
+	- Ingame menu (press escape blabla)	
+	- Particles
 	- Water tile (finish)
-	- add mobs
-	- death
+	- add mobs	
 	- Create nice borders for the tiles (more intelligent tiles)
 	- A lot more..........
 	
-	NEXT UP:	
-	- Design tiles
+	NEXT UP:	 	
+	
 	
 	DONE:
+	- Spikes
+	- Design tiles
 	- 3 Levels
 	- Level selecting
 	- Player movement
@@ -25,9 +27,11 @@
 	- Finish level
 	- Pickups (coins)
 	- Score
+	- Lava tiles 
+	- Death
 	
-
-
+	
+	
 
 	THEME: Tiny World
 

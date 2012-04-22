@@ -30,6 +30,7 @@ package nl.logiconline.tinydroplet.states {
 		private var hud:Hud;
 		private var winText:FlashingText;
 		public  var win:Boolean = false;
+		public 	var lose:Boolean = false;
 		private var score:int = 0;
 		
 		public function GameState(level:int)	{
@@ -68,6 +69,11 @@ package nl.logiconline.tinydroplet.states {
 			if(this.win && Input.check(Key.SPACE)) {
 				FP.world = new WorldSelectState();
 			}
+			
+			if(this.lose && Input.check(Key.SPACE)) {				
+				FP.world = new GameState(this.level.getCurrentLevel());
+			}
+			
 		}
 		
 		public function getLevel():Level {
@@ -85,6 +91,15 @@ package nl.logiconline.tinydroplet.states {
 			var subWinText:Text = new Text("Press SPACE to continue", 220, 246);
 			this.add(subWinText);
 			this.win = true;
+		}
+		
+		public function loseCall():void {
+			this.winText = new FlashingText("YOU DIED!", 240, 216);
+			this.winText.getText().size = 32;
+			this.add(this.winText);
+			var subWinText:Text = new Text("Press SPACE to try again", 220, 246);
+			this.add(subWinText);
+			this.lose = true;
 		}
 		
 		public function getScore():int {

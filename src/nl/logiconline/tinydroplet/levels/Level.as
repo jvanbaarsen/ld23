@@ -20,7 +20,9 @@ package nl.logiconline.tinydroplet.levels {
 	import nl.logiconline.tinydroplet.states.GameState;
 	import nl.logiconline.tinydroplet.tiles.FinishTile;
 	import nl.logiconline.tinydroplet.tiles.GrassTile;
+	import nl.logiconline.tinydroplet.tiles.LavaTile;
 	import nl.logiconline.tinydroplet.tiles.SandTile;
+	import nl.logiconline.tinydroplet.tiles.SpikeTile;
 	import nl.logiconline.tinydroplet.tiles.Tile;
 	import nl.logiconline.tinydroplet.tiles.background.Ground;
 	import nl.logiconline.tinydroplet.tiles.background.Sky;
@@ -84,6 +86,10 @@ package nl.logiconline.tinydroplet.levels {
 						var coin:CoinPickup = new CoinPickup(x * 32, y * 32);
 						this.pickups[x][y] = coin;
 						this.game.add(coin);
+					} else if(canvas.getPixel(x, y) == 0xff7f0000) { //Lava tile
+						tile = new LavaTile(x * 32, y * 32);						
+					} else if(canvas.getPixel(x, y) == 0xffb7b7b7) { //Spike tile
+						tile = new SpikeTile(x * 32, y * 32);
 					}
 					
 					if(tile != null) {
@@ -131,6 +137,10 @@ package nl.logiconline.tinydroplet.levels {
 			var tmpY:int = Math.ceil(y / 32);
 			trace("x: "+ tmpX + " y: "+ tmpY);
 			trace(this.pickups[tmpX][tmpY]);
+		}
+		
+		public function getCurrentLevel():int {
+			return this.levelNumber;
 		}
 	}
 }

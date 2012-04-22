@@ -31,9 +31,11 @@ package nl.logiconline.tinydroplet.entities {
 		
 		//color: 0x34aaf5
 		private static const kMoveSpeed:uint = 2;
-		private static const kJumpForce:uint = 19;		
+		private static const kJumpForce:uint = 18;		
 		private var spritesheet:Spritemap;
 		private var health:int;
+		private var died:Boolean = false;	
+		private var canMove:Boolean = true;
 		
 		[Embed(source="/../assets/player.png")] private const PLAYER:Class;
 		public function Player(x:Number=0, y:Number=0, graphic:Graphic=null, mask:Mask=null) {
@@ -46,6 +48,7 @@ package nl.logiconline.tinydroplet.entities {
 			this.spritesheet.add("right", [1], 10, true);
 			this.spritesheet.add("left", [2], 10, true);
 			this.spritesheet.add("jump", [3], 10, true);
+			this.spritesheet.add("dead", [4,4,4,4,5,5,5,5,5,6,6,6,6,6,6,], 10, false);
 						
 			this.setHitbox(24, 20, -1, -6);
 			this.graphic = this.spritesheet;
@@ -56,7 +59,7 @@ package nl.logiconline.tinydroplet.entities {
 		private function setup():void {
 			
 			// Set physics properties
-			gravity.y = 2.4;
+			gravity.y = 2.0;
 			maxVelocity.y = kJumpForce;
 			maxVelocity.x = kMoveSpeed * 2;
 			friction.x = friction.y = 1.6;
@@ -77,8 +80,30 @@ package nl.logiconline.tinydroplet.entities {
 		override public function update():void {
 			acceleration.x = acceleration.y = 0;		
 			if(GameState(this.world).win) {
-				this.spritesheet.play("idle");
+				this.spritesheet.play("idle");	
+				this.canMove = false;
+			} else if(GameState(this.world).lose) {
+				this.died = true;
+				this.canMove = false;
 			} else {
+				if(this.collide("lava", x, y) != null) {
+					if(this.health > 0) this.health -= 20;					
+				}
+				
+				if(this.collide("spike", x, y) != null) {
+					if(this.health > 0) this.health -= 10;
+					
+					if(this.health > 0)	acceleration.y = -(kJumpForce / 3);
+				}
+				
+				if(this.health <= 0) {
+					GameState(this.world).loseCall();
+				}
+			}
+			
+			if(this.health < 0) this.health = 0; //To prefend the healthbar tripping..
+			
+			if(this.canMove) {
 				if (Input.check("left")) {
 					this.spritesheet.play("left");
 					acceleration.x = -kMoveSpeed;				
@@ -102,19 +127,27 @@ package nl.logiconline.tinydroplet.entities {
 				}					
 			}
 					
-			if(this.collide("pickup", x, y) != null) {
+			if(this.collide("pickup", x, y) != null && !this.died) {
 				var pickup:Pickup  = Pickup(this.collide("pickup", x, y));
 				if(pickup != null) {
 					var score:FloatingText = new FloatingText(pickup.x, pickup.y, "+ "+ pickup.getValue());
 					this.world.add(score);
 					GameState(this.world).addScore(pickup.getValue());
 					this.world.remove(pickup);
-				}
-				//GameState(this.world).getLevel().getPickup(x, y);
+				}				
 			}
+			
+			if(this.died) {
+				this.spritesheet.play("dead");
+				this.spritesheet.alpha -= 0.01;
+				this.y -= 20;				
+			}
+			
+			
+			super.update();
 		
 			
-			super.update();		
+			
 			
 		}
 		
