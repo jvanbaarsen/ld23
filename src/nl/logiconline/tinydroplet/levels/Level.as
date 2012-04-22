@@ -23,9 +23,11 @@ package nl.logiconline.tinydroplet.levels {
 	import nl.logiconline.tinydroplet.tiles.LavaTile;
 	import nl.logiconline.tinydroplet.tiles.SandTile;
 	import nl.logiconline.tinydroplet.tiles.SpikeTile;
+	import nl.logiconline.tinydroplet.tiles.StartTile;
 	import nl.logiconline.tinydroplet.tiles.Tile;
 	import nl.logiconline.tinydroplet.tiles.background.Ground;
 	import nl.logiconline.tinydroplet.tiles.background.Sky;
+	import nl.logiconline.tinydroplet.tiles.background.Tube;
 	
 	import org.osmf.elements.ImageLoader;
 	
@@ -83,6 +85,7 @@ package nl.logiconline.tinydroplet.levels {
 					} else if(canvas.getPixel(x, y) == 0xff00ff00) { //Green tile						
 						tile = new GrassTile(x * 32, y * 32);
 					} else if(canvas.getPixel(x, y) == 0xffff00ff) { // start point												
+						tile = new StartTile(x * 32, y * 32);
 						Level.startPoint.x = x;						
 						Level.startPoint.y = y;						
 					} else if(canvas.getPixel(x, y) == 0xff0000ff) { // End point
@@ -122,6 +125,10 @@ package nl.logiconline.tinydroplet.levels {
 						tile = new Sky(x * 32, y * 32);
 					} else if(canvas.getPixel(x, y) == 0xff8f5902) { //Ground
 						tile = new Ground(x * 32, y * 32);
+					} else if(canvas.getPixel(x, y) == 0xff000000) { //Ground tube
+						tile = new Tube("ground", x * 32, y * 32);
+					} else if(canvas.getPixel(x, y) == 0xff7f7f7f) {
+						tile = new Tube("sky", x * 32, y * 32);
 					}
 					
 					if(tile != null) {
