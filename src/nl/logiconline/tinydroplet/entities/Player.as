@@ -35,7 +35,10 @@ package nl.logiconline.tinydroplet.entities {
 		private var spritesheet:Spritemap;
 		private var health:int;
 		private var died:Boolean = false;	
-		private var canMove:Boolean = true;
+		public var canMove:Boolean = true;
+		private var coinsCollected:int = 0;
+		private var isHurt:Boolean = false;
+		private var isHurtCounter:int = 0;
 		
 		[Embed(source="/../assets/player.png")] private const PLAYER:Class;
 		public function Player(x:Number=0, y:Number=0, graphic:Graphic=null, mask:Mask=null) {
@@ -53,7 +56,7 @@ package nl.logiconline.tinydroplet.entities {
 			this.setHitbox(24, 20, -1, -6);
 			this.graphic = this.spritesheet;
 			this.setup();	
-			this.health = 150; //The lazy way :)
+			this.health = 100; 
 		}
 		
 		private function setup():void {
@@ -78,7 +81,22 @@ package nl.logiconline.tinydroplet.entities {
 		}
 		
 		override public function update():void {
-			acceleration.x = acceleration.y = 0;		
+			acceleration.x = acceleration.y = 0;	
+			
+			if(this.isHurt) {
+				this.isHurtCounter--;
+				if(this.isHurtCounter % 3 == 0) {
+					this.spritesheet.alpha = 0.1;
+				} else {
+					this.spritesheet.alpha = 1;
+				}
+				if(this.isHurtCounter == 0) {
+					this.spritesheet.alpha = 1;
+					this.isHurt = false;
+					this.spritesheet.color = 0xffffff;
+				}
+			}
+			
 			if(GameState(this.world).win) {
 				this.spritesheet.play("idle");	
 				this.canMove = false;
@@ -91,9 +109,7 @@ package nl.logiconline.tinydroplet.entities {
 				}
 				
 				if(this.collide("spike", x, y) != null) {
-					if(this.health > 0) this.health -= 10;
-					
-					if(this.health > 0)	acceleration.y = -(kJumpForce / 3);
+					this.hurt();					
 				}
 				
 				if(this.health <= 0) {
@@ -134,6 +150,7 @@ package nl.logiconline.tinydroplet.entities {
 					this.world.add(score);
 					GameState(this.world).addScore(pickup.getValue());
 					this.world.remove(pickup);
+					this.coinsCollected++;
 				}				
 			}
 			
@@ -143,12 +160,7 @@ package nl.logiconline.tinydroplet.entities {
 				this.y -= 20;				
 			}
 			
-			
-			super.update();
-		
-			
-			
-			
+			super.update();			
 		}
 		
 		public function getHealth():int {
@@ -157,6 +169,22 @@ package nl.logiconline.tinydroplet.entities {
 		
 		public function setHealth(health:int):void {
 			this.health = health;
+		}
+		
+		public function getCoinsCollected():int {
+			return this.coinsCollected;
+		}
+		
+		public function hurt():void {
+			if(!this.isHurt) {
+				if(this.health > 0) this.health -= 10;					
+				if(this.health > 0)	acceleration.y = -(kJumpForce / 3);
+				var floatingText:FloatingText = new FloatingText(x, y, "- 10", 0xff0000);
+				this.world.add(floatingText);
+				GameState(this.world).removeScore(10);
+				this.isHurt = true;				
+				this.isHurtCounter = 20;
+			}			
 		}
 		
 	}

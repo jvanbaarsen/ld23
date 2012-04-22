@@ -16,7 +16,9 @@ package nl.logiconline.tinydroplet.states {
 	import nl.logiconline.tinydroplet.Camera;
 	import nl.logiconline.tinydroplet.entities.Player;
 	import nl.logiconline.tinydroplet.gui.FlashingText;
+	import nl.logiconline.tinydroplet.gui.FloatingText;
 	import nl.logiconline.tinydroplet.gui.Hud;
+	import nl.logiconline.tinydroplet.gui.Menu;
 	import nl.logiconline.tinydroplet.gui.Text;
 	import nl.logiconline.tinydroplet.levels.Level;
 	
@@ -32,6 +34,9 @@ package nl.logiconline.tinydroplet.states {
 		public  var win:Boolean = false;
 		public 	var lose:Boolean = false;
 		private var score:int = 0;
+		private var menu:Menu;
+		private var escapeTimeOut:int = 0;
+		private var warningTimeOut:int =0;
 		
 		public function GameState(level:int)	{
 			super();			
@@ -59,12 +64,28 @@ package nl.logiconline.tinydroplet.states {
 		override public function update():void {			
 			gameCam.moveCamera(this.level.getWidth() * Level.tileWidth, this.level.getHeight() * Level.tileHeight, this.player);
 			super.update();
-			this.hud.x = FP.camera.x;
-			this.hud.y = FP.camera.y;			
 			
-			if(this.player.collide("finish", this.player.x, this.player.y) != null) {				
-				if(!this.win) this.winCall();
+			this.hud.x = FP.camera.x;
+			this.hud.y = FP.camera.y;		
+			
+			
+			if(this.player.collide("finish", this.player.x, this.player.y) != null) {	
+				//Check if all the coins are collected..
+				
+				if(this.player.getCoinsCollected() < this.level.getTotalCoins()) {
+					if(this.warningTimeOut == 0) {
+						var warning:FloatingText = new FloatingText(FP.camera.x + 60, FP.camera.y + 120, "You didn't collect al the coins!", 0xff0000);
+						warning.getText().size = 32;
+						this.add(warning);
+						this.warningTimeOut = 50;
+					}
+				} else {
+					if(!this.win) this.winCall();	
+				}			
+				
 			}
+			
+			if(this.warningTimeOut > 0) this.warningTimeOut--;
 			
 			if(this.win && Input.check(Key.SPACE)) {
 				FP.world = new WorldSelectState();
@@ -73,6 +94,26 @@ package nl.logiconline.tinydroplet.states {
 			if(this.lose && Input.check(Key.SPACE)) {				
 				FP.world = new GameState(this.level.getCurrentLevel());
 			}
+			
+			
+			//Need some sort of delay...
+			if(this.menu == null && Input.check(Key.ESCAPE) && this.escapeTimeOut == 0) {
+				this.menu = new Menu(FP.width / 2 - 150, FP.height / 2 - 150);				
+				this.add(this.menu);
+				this.player.canMove = false;
+				this.escapeTimeOut = 10;
+				
+			} else if(this.menu != null && Input.check(Key.ESCAPE) && this.escapeTimeOut == 0) {
+				this.remove(this.menu);
+				this.menu = null;
+				this.player.canMove = true;
+				this.escapeTimeOut = 10;
+			}
+			
+			if(this.escapeTimeOut != 0)	this.escapeTimeOut--;
+			
+			
+			
 			
 		}
 		
@@ -108,6 +149,18 @@ package nl.logiconline.tinydroplet.states {
 		
 		public function addScore(score:int):void {
 			this.score += score;
+		}
+		
+		public function removeScore(score:int):void {
+			this.score -= score;
+			if(this.score < 0) this.score = 0; 
+		}
+		
+		public function closeMenu():void {
+			this.remove(this.menu);
+			this.menu = null;
+			this.player.canMove = true;
+			this.escapeTimeOut = 10;
 		}
 	}
 }

@@ -36,17 +36,21 @@ package nl.logiconline.tinydroplet.levels {
 		private var mapWidth:int = 0;
 		private var mapHeight:int = 0;	
 		private var levelNumber:int;
+		private var totalCoins:int = 0;
 		
 		public static var tileWidth:int = 32;
 		public static var tileHeight:int = 32;
-		public static var startPoint:Point;		
+		public static var startPoint:Point;
+		
 		
 		[Embed(source="/../assets/levels/level1.png")] private const LEVEL1:Class;
 		[Embed(source="/../assets/levels/level2.png")] private const LEVEL2:Class;
 		[Embed(source="/../assets/levels/level3.png")] private const LEVEL3:Class;
+		[Embed(source="/../assets/levels/level4.png")] private const LEVEL4:Class;
 		[Embed(source="/../assets/levels/level1_background.png")] private const LEVEL1_BACKGROUND:Class;
 		[Embed(source="/../assets/levels/level2_background.png")] private const LEVEL2_BACKGROUND:Class;
 		[Embed(source="/../assets/levels/level3_background.png")] private const LEVEL3_BACKGROUND:Class;
+		[Embed(source="/../assets/levels/level4_background.png")] private const LEVEL4_BACKGROUND:Class;
 		public function Level(game:GameState, levelNumber:int, x:Number=0, y:Number=0, graphic:Graphic=null, mask:Mask=null)	{
 			super(x, y, graphic, mask);			
 			this.game = game;
@@ -61,7 +65,8 @@ package nl.logiconline.tinydroplet.levels {
 			if(this.levelNumber == 1) level = new Image(LEVEL1);
 			else if(this.levelNumber == 2) level = new Image(LEVEL2);
 			else if(this.levelNumber == 3) level = new Image(LEVEL3);
-			else level = new Image(LEVEL1); //Temp solution :)
+			else if(this.levelNumber == 4) level = new Image(LEVEL4);
+			else level = new Image(LEVEL1); //just to be sure..
 			
 			var canvas:Canvas = new Canvas(level.width, level.height);
 			canvas.drawGraphic(0, 0, level);
@@ -84,6 +89,7 @@ package nl.logiconline.tinydroplet.levels {
 						tile = new FinishTile(x * 32, y * 32);						
 					} else if(canvas.getPixel(x, y) == 0xffffff00) { //Coin pickup
 						var coin:CoinPickup = new CoinPickup(x * 32, y * 32);
+						this.totalCoins++;
 						this.pickups[x][y] = coin;
 						this.game.add(coin);
 					} else if(canvas.getPixel(x, y) == 0xff7f0000) { //Lava tile
@@ -105,7 +111,8 @@ package nl.logiconline.tinydroplet.levels {
 			var background:Image;
 			if(this.levelNumber == 1) background = new Image(LEVEL1_BACKGROUND);
 			else if(this.levelNumber == 2) background = new Image(LEVEL2_BACKGROUND);
-			else if(this.levelNumber == 3) background = new Image(LEVEL3_BACKGROUND);			
+			else if(this.levelNumber == 3) background = new Image(LEVEL3_BACKGROUND);
+			else if(this.levelNumber == 4) background = new Image(LEVEL4_BACKGROUND);
 			var canvas:Canvas = new Canvas(background.width, background.height);
 			canvas.drawGraphic(0,0,background);
 			for(var x:int = 0; x <= this.mapWidth; x++) {
@@ -141,6 +148,10 @@ package nl.logiconline.tinydroplet.levels {
 		
 		public function getCurrentLevel():int {
 			return this.levelNumber;
+		}
+		
+		public function getTotalCoins():int {
+			return this.totalCoins;
 		}
 	}
 }

@@ -3,20 +3,22 @@
 	Extra credits: http://matttuttle.com/2011/02/simple-flashpunk-physics/ for the Flashpunk physics shizzle..
 
 
-
 	TODO list:		
-	- Create at least 1 more levels
-	- Ingame menu (press escape blabla)	
+	- Level unlocking
+	- Highscore tracking 
 	- Particles
 	- Water tile (finish)
 	- add mobs	
 	- Create nice borders for the tiles (more intelligent tiles)
-	- A lot more..........
+	- Submit (lot has to be scraped :-( )			
 	
-	NEXT UP:	 	
-	
+	NEXT UP:	
+	- Create at least 1 more levels
 	
 	DONE:
+	- Add dangers to the other levels :)
+	- New health bar..
+	- Ingame menu
 	- Spikes
 	- Design tiles
 	- 3 Levels
@@ -29,6 +31,8 @@
 	- Score
 	- Lava tiles 
 	- Death
+	
+	
 	
 	
 	
@@ -47,7 +51,7 @@
 	
 	
 	
-	---When time left---
+	---When time left--- (which i don't have...).. Maybe another release :)
 	Create some sort of build mechanism so the levels can be a little harder...
 		
 

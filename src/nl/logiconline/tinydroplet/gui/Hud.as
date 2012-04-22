@@ -24,36 +24,35 @@ package nl.logiconline.tinydroplet.gui {
 	
 	public class Hud extends Entity {	
 		
-		[Embed(source="/../assets/gui.png")] private const HUD:Class;
-		[Embed(source="/../assets/drybar.png")] private const DRY_BAR:Class;
+		[Embed(source="/../assets/gui.png")] private const HUD:Class;		
+		[Embed(source="/../assets/healthBackground.png")] private const HEALTH_BACK:Class;
 		private var time:Text;
 		private var timer:Timer;
 		private var actualTime:int;
 		private var txtScore:Text;
 		private var score:int = 0;
-		private var txtHealth:Text;
-		private var dryBar:Image = new Image(DRY_BAR);
+		private var txtHealth:Text;		
 		private var game:GameState;
+		private var healthBackground:Image;
+		private var coinCounter:Text;
 		public function Hud(game:GameState, x:Number=0, y:Number=0, graphic:Graphic=null, mask:Mask=null) {			
 			super(x, y, graphic, mask);
 			this.graphic = new Image(HUD);
+			this.healthBackground = new Image(HEALTH_BACK);
 			this.width = 640;
 			this.height = 80;	
 			this.game = game;
 			
-			
-			//Timer
-			time = new Text("0", FP.width / 2 - 10, 25);
-			this.timer = new Timer(1000);
-			timer.addEventListener(TimerEvent.TIMER, timerHandler);
-			
+		
 			//Score
-			this.txtScore = new Text("Score: " + game.getScore(), FP.width / 2 + 100, 10);
-			this.txtScore.getText().size = 24;
+			this.txtScore = new Text("Score: " + game.getScore(), 20, 10);
+			//this.txtScore.getText().size = 24;
 			
 			//Health
-			this.txtHealth = new Text("Health: ", 10, 10);
-			this.txtHealth.getText().size = 24;
+			this.txtHealth = new Text("Health", 5, 10);
+			
+			//Coin counter
+			this.coinCounter = new Text("Coins:", FP.width / 2 + 100, 10);
 			
 		}
 		
@@ -61,32 +60,23 @@ package nl.logiconline.tinydroplet.gui {
 			super.added();			
 			FP.world.add(this.txtScore);
 			FP.world.add(this.txtHealth);
-			
-			var text:Text = new Text("Time", FP.width / 2 - 30, 5);
-			text.getText().size = 24;			
-			FP.world.add(text);
-			FP.world.add(time);
-			this.timer.start();			
+			FP.world.add(this.coinCounter);
+			this.coinCounter.getText().text = "Coins: "+ this.game.getPlayer().getCoinsCollected() +" / "+ this.game.getLevel().getTotalCoins();
 		}
 		
 		override public function update():void {
 			super.update();
 			this.txtScore.getText().text = "Score: "+ game.getScore();
+			this.coinCounter.getText().text = "Coins: "+ this.game.getPlayer().getCoinsCollected() +" / "+ this.game.getLevel().getTotalCoins();
 		}
 		
 		override public function render():void {
-			super.render();	
-			this.dryBar.scaleX = this.game.getPlayer().getHealth();
-			Draw.rectPlus(x + 94, y+ 11, 151, 21, 0x0000ff, 0.8, false); 
-			Draw.rect( x + 95, y + 12, 150, 20, 0x0000ff, 0.2);
-			Draw.graphic(dryBar, x + 95, y + 12);
-			
-		}
-		
-		private function timerHandler(e:TimerEvent):void{	
-			this.actualTime += 1;		
-			this.time.setRelativeX(FP.width / 2 - 10);
-			this.time.getText().text = this.actualTime.toString();
+			Draw.graphic(this.healthBackground, x + 256, y);
+			Draw.rect(x + 170, y + (60 - this.game.getPlayer().getHealth() * 0.6), 300, this.game.getPlayer().getHealth() * 0.6, 0x1c10d8);
+			//Image(this.graphic).alpha = 0.4;
+			this.txtHealth.x = x + 290;		
+			this.txtHealth.y = y;
+			super.render();			
 		}
 	}
 }
