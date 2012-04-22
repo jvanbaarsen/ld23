@@ -19,12 +19,13 @@ package nl.logiconline.tinydroplet.gui {
 		protected var moveWithCamera:Boolean = true;
 		private var relativeX:int;
 		private var relativeY:int;
-		public function Text(text:String, x:Number=0, y:Number=0)	{			
+		public function Text(text:String, x:Number=0, y:Number=0, followCamera:Boolean = true)	{			
 			super(x, y, null, null);
 			this.relativeX = x;
 			this.relativeY = y;
 			this.text = new net.flashpunk.graphics.Text(text);
 			this.graphic = this.text;
+			this.moveWithCamera = followCamera;
 		}
 		
 		override public function update():void {

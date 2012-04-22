@@ -21,8 +21,7 @@ package {
 		public function ld23()	{
 			super(640, 480);
 			FP.world = new MenuState();
-			FP.screen.color = 0x474747;
-			//FP.console.enable();
+			FP.screen.color = 0x474747;			
 		}
 	}
 }

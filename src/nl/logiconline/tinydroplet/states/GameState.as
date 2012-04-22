@@ -56,6 +56,20 @@ package nl.logiconline.tinydroplet.states {
 			hud = new Hud(this);
 			this.add(hud);
 			
+			if(this.level.getCurrentLevel() == 1) {
+				//Add tutorial text
+				var tutorialText1:Text = new Text("Left/Right/Up to move", 10, 200, false);
+				var tutorialText2:Text = new Text("Watch out for lava, it kills!", 60, 448, false);
+				var tutorialText3:Text = new Text("Spikes hurt as well!", 350, 310, false);
+				var tutorialText4:Text = new Text("Collect all the coins", 400, 435, false);
+				var tutorialText5:Text = new Text("Then go to the sewer entrance!", 672, 200, false);
+				this.add(tutorialText1);
+				this.add(tutorialText2);
+				this.add(tutorialText3);
+				this.add(tutorialText4);
+				this.add(tutorialText5);
+			}
+			
 		}
 		
 		override public function render():void {
@@ -71,8 +85,7 @@ package nl.logiconline.tinydroplet.states {
 			
 			
 			if(this.player.collide("finish", this.player.x, this.player.y) != null) {	
-				//Check if all the coins are collected..
-				
+				//Check if all the coins are collected..				
 				if(this.player.getCoinsCollected() < this.level.getTotalCoins()) {
 					if(this.warningTimeOut == 0) {
 						var warning:FloatingText = new FloatingText(FP.camera.x + 60, FP.camera.y + 120, "You didn't collect al the coins!", 0xff0000);
@@ -111,11 +124,7 @@ package nl.logiconline.tinydroplet.states {
 				this.escapeTimeOut = 10;
 			}
 			
-			if(this.escapeTimeOut != 0)	this.escapeTimeOut--;
-			
-			
-			
-			
+			if(this.escapeTimeOut != 0)	this.escapeTimeOut--;			
 		}
 		
 		public function getLevel():Level {
@@ -127,7 +136,12 @@ package nl.logiconline.tinydroplet.states {
 		}
 		
 		private function winCall():void {
-			this.winText = new FlashingText("YOU'VE COMPLETED THE LEVEL!", 120, 216);
+			if(this.level.getCurrentLevel() == 4) {
+				this.winText = new FlashingText("YOU'VE COMPLETED THE GAME!", 120, 216);	
+			} else {
+				this.winText = new FlashingText("YOU'VE COMPLETED THE LEVEL!", 120, 216);
+			}
+			
 			this.winText.getText().size = 32;
 			this.add(this.winText);
 			var subWinText:Text = new Text("Press SPACE to continue", 220, 246);
@@ -136,11 +150,8 @@ package nl.logiconline.tinydroplet.states {
 			if(Saver.lastLevel() < this.level.getCurrentLevel() + 1) {
 				Saver.writeLevel(this.level.getCurrentLevel() + 1);	
 			}			
-			if(this.score > Saver.getHighscore(this.level.getCurrentLevel())) {
-				trace("writing highscore");
+			if(this.score > Saver.getHighscore(this.level.getCurrentLevel())) {				
 				Saver.writeHighscore(this.level.getCurrentLevel(), this.score);
-			} else {
-				trace("Not writing anything..");
 			}
 		}
 		

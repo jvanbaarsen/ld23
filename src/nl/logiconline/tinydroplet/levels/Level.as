@@ -127,7 +127,7 @@ package nl.logiconline.tinydroplet.levels {
 						tile = new Ground(x * 32, y * 32);
 					} else if(canvas.getPixel(x, y) == 0xff000000) { //Ground tube
 						tile = new Tube("ground", x * 32, y * 32);
-					} else if(canvas.getPixel(x, y) == 0xff7f7f7f) {
+					} else if(canvas.getPixel(x, y) == 0xff7f7f7f) { //Sky tube
 						tile = new Tube("sky", x * 32, y * 32);
 					}
 					
@@ -148,9 +148,7 @@ package nl.logiconline.tinydroplet.levels {
 		
 		public function getPickup(x:int, y:int):void {
 			var tmpX:int = Math.ceil(x / 32);
-			var tmpY:int = Math.ceil(y / 32);
-			trace("x: "+ tmpX + " y: "+ tmpY);
-			trace(this.pickups[tmpX][tmpY]);
+			var tmpY:int = Math.ceil(y / 32);			
 		}
 		
 		public function getCurrentLevel():int {

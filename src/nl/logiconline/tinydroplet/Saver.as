@@ -15,8 +15,7 @@ package nl.logiconline.tinydroplet {
 		
 		public static function load():void {
 			Data.load("testfile.dat");
-			var times:uint = Data.readInt("times_ran",1);
-			trace("We've run", times, "times!");
+			var times:uint = Data.readInt("times_ran",1);			
 			
 			times = times + 1;
 			Data.writeInt("times_ran",times);

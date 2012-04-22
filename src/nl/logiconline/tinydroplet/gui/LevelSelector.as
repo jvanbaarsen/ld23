@@ -38,8 +38,7 @@ package nl.logiconline.tinydroplet.gui {
 		override public function added():void {
 			super.added();
 			this.levelText = new Text("Level "+ this.level, x + 20, y + 40);
-			var score:int = Saver.getHighscore(this.level);
-			trace("Level: "+ this.level);
+			var score:int = Saver.getHighscore(this.level);			
 			if(score != -1) {
 				this.highscore = new Text("Highscore: "+ score, x, y + 120);
 				this.world.add(this.highscore);
