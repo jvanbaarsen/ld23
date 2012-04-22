@@ -14,6 +14,7 @@ package nl.logiconline.tinydroplet.states {
 	import net.flashpunk.utils.Key;
 	
 	import nl.logiconline.tinydroplet.Camera;
+	import nl.logiconline.tinydroplet.Saver;
 	import nl.logiconline.tinydroplet.entities.Player;
 	import nl.logiconline.tinydroplet.gui.FlashingText;
 	import nl.logiconline.tinydroplet.gui.FloatingText;
@@ -132,6 +133,15 @@ package nl.logiconline.tinydroplet.states {
 			var subWinText:Text = new Text("Press SPACE to continue", 220, 246);
 			this.add(subWinText);
 			this.win = true;
+			if(Saver.lastLevel() < this.level.getCurrentLevel() + 1) {
+				Saver.writeLevel(this.level.getCurrentLevel() + 1);	
+			}			
+			if(this.score > Saver.getHighscore(this.level.getCurrentLevel())) {
+				trace("writing highscore");
+				Saver.writeHighscore(this.level.getCurrentLevel(), this.score);
+			} else {
+				trace("Not writing anything..");
+			}
 		}
 		
 		public function loseCall():void {

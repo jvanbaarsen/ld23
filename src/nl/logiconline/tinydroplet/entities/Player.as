@@ -26,6 +26,7 @@ package nl.logiconline.tinydroplet.entities {
 	import nl.logiconline.tinydroplet.gui.FloatingText;
 	import nl.logiconline.tinydroplet.levels.Level;
 	import nl.logiconline.tinydroplet.states.GameState;
+	import net.flashpunk.Sfx;
 	
 	public class Player extends PhysicsEntity {
 		
@@ -41,6 +42,10 @@ package nl.logiconline.tinydroplet.entities {
 		private var isHurtCounter:int = 0;
 		
 		[Embed(source="/../assets/player.png")] private const PLAYER:Class;
+		[Embed(source = '/../assets/sounds/hurt.mp3')] private const OUCH:Class;
+		[Embed(source = '/../assets/sounds/coin.mp3')] private const PLING:Class;
+		public var shoot:Sfx = new Sfx(OUCH);
+		public var plingel:Sfx = new Sfx(PLING);
 		public function Player(x:Number=0, y:Number=0, graphic:Graphic=null, mask:Mask=null) {
 			super(x, y);
 			this.type = "player";
@@ -146,6 +151,7 @@ package nl.logiconline.tinydroplet.entities {
 			if(this.collide("pickup", x, y) != null && !this.died) {
 				var pickup:Pickup  = Pickup(this.collide("pickup", x, y));
 				if(pickup != null) {
+					this.plingel.play();
 					var score:FloatingText = new FloatingText(pickup.x, pickup.y, "+ "+ pickup.getValue());
 					this.world.add(score);
 					GameState(this.world).addScore(pickup.getValue());
@@ -177,6 +183,7 @@ package nl.logiconline.tinydroplet.entities {
 		
 		public function hurt():void {
 			if(!this.isHurt) {
+				this.shoot.play();
 				if(this.health > 0) this.health -= 10;					
 				if(this.health > 0)	acceleration.y = -(kJumpForce / 3);
 				var floatingText:FloatingText = new FloatingText(x, y, "- 10", 0xff0000);

@@ -9,16 +9,19 @@
 
 package nl.logiconline.tinydroplet.states {
 	import net.flashpunk.World;
+	import net.flashpunk.graphics.Image;
 	import net.flashpunk.utils.Draw;
 	
+	import nl.logiconline.tinydroplet.Saver;
 	import nl.logiconline.tinydroplet.gui.LevelSelector;
-	import net.flashpunk.graphics.Image;
 	
 	public class WorldSelectState extends World {		
 		[Embed(source="/../assets/logo.png")] private const LOGOIMG:Class;
 		private var logo:Image = new Image(LOGOIMG);
+		private var lastLevel:int = 1;
 		public function WorldSelectState() {			
 			super();
+			this.lastLevel = Saver.lastLevel();		
 		}
 		
 		override public function begin():void {
@@ -28,13 +31,20 @@ package nl.logiconline.tinydroplet.states {
 			this.add(level1);
 			
 			var level2:LevelSelector = new LevelSelector(2, 190, 200);
-			this.add(level2);
+			if(this.lastLevel >= 2) {				
+				this.add(level2);
+			}			
 			
 			var level3:LevelSelector = new LevelSelector(3, 340, 200);
-			this.add(level3);
+			if(this.lastLevel >= 3) {
+				this.add(level3);	
+			}
+			
 			
 			var level4:LevelSelector = new LevelSelector(4, 490, 200);
-			this.add(level4);
+			if(this.lastLevel >= 4) {
+				this.add(level4);	
+			}
 			
 		}
 		

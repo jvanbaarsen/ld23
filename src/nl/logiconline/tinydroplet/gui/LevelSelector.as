@@ -16,6 +16,7 @@ package nl.logiconline.tinydroplet.gui {
 	import net.flashpunk.utils.Draw;
 	import net.flashpunk.utils.Input;
 	
+	import nl.logiconline.tinydroplet.Saver;
 	import nl.logiconline.tinydroplet.states.GameState;
 	
 	public class LevelSelector extends Entity {
@@ -26,16 +27,24 @@ package nl.logiconline.tinydroplet.gui {
 		private var imageHover:Image = new Image(HOVER);
 		private var level:int;
 		private var levelText:Text;
+		private var highscore:Text;
 		public function LevelSelector(level:int, x:Number=0, y:Number=0, graphic:Graphic=null, mask:Mask=null)	{			
 			super(x, y, graphic, mask);
 			this.level = level;
 			this.width = 100;
-			this.height = 100;
+			this.height = 100;			
 		}
 		
 		override public function added():void {
 			super.added();
 			this.levelText = new Text("Level "+ this.level, x + 20, y + 40);
+			var score:int = Saver.getHighscore(this.level);
+			trace("Level: "+ this.level);
+			if(score != -1) {
+				this.highscore = new Text("Highscore: "+ score, x, y + 120);
+				this.world.add(this.highscore);
+			}
+			
 			this.world.add(this.levelText);
 		}
 		
